@@ -30,11 +30,18 @@ jobs:
 
       - name: Install dependencies
         run: flutter pub get
+        
+      - name: Install dependencies
+        run: flutter pub run intl_utils:generate
+        
+      - name: Install dependencies
+        run: flutter pub run build_runner build --delete-conflicting-outputs
 
-      # Uncomment this step to verify the use of 'dart format' on each commit.
-      # - name: Verify formatting
-      #   run: dart format --output=none --set-exit-if-changed .
-
-      # Consider passing '--fatal-infos' for slightly stricter analysis.
       - name: Analyze project source
         run: flutter analyze .
+        
+      - run: flutter build apk
+      - uses: actions/upload-artifact@v1
+        with:
+          name: release-apk
+          path: build/app/outputs/apk/release/app-release.apk
